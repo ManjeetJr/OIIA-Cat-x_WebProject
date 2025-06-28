@@ -6,7 +6,7 @@ Welcome to OIIA Cat-x Web Project – a creative and multimedia-rich static webs
 
 🔗 Visit the Live Website
 
-
+https://manjeetjr.github.io/OIIA-Cat-x_WebProject/
 ---
 
 📂 Project Features
@@ -89,5 +89,6 @@ This is a personal learning project, but feel free to fork and experiment!
 Manjeet Dhiman
 💬 Always building something creative.
 📱 Live Site
+https://manjeetjr.github.io/OIIA-Cat-x_WebProject/
 # OIIA-Cat x_WebProject
 a web page to explore OIIA Cat x Videos
