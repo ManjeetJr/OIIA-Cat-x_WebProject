@@ -1,34 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Explore More Videos</title>
   <style>
+    :root {
+      --bg-color: #0f0c29;
+      --text-color: #fff;
+      --header-bg: rgba(0, 0, 0, 0.5);
+      --card-border: #a855f7;
+      --highlight: #c084fc;
+      --title-glow: 0 0 12px #c084fc;
+    }
+
+    body.light-mode {
+      --bg-color: #f1f5f9;
+      --text-color: #111;
+      --header-bg: rgba(255, 255, 255, 0.5);
+      --card-border: #6366f1;
+      --highlight: #6366f1;
+      --title-glow: 0 0 10px #818cf8;
+    }
+
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: #ffffff;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px;
-      background-color: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      padding: 35px 20px;
+      background-color: var(--header-bg);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      position: relative;
     }
 
     header h1 {
-      color: #c084fc;
+      color: var(--highlight);
       font-size: 2.8rem;
       margin: 0;
-      text-shadow: 0 0 8px #c084fc;
+      text-shadow: var(--title-glow);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        text-shadow: var(--title-glow);
+      }
+      50% {
+        text-shadow: 0 0 25px var(--highlight), 0 0 35px var(--highlight);
+      }
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: 2px solid var(--highlight);
+      color: var(--highlight);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--highlight);
+      color: #fff;
     }
 
     marquee {
-      color: #ffd700;
+      color: gold;
       font-size: 1.1rem;
       margin-top: 10px;
       font-style: italic;
@@ -36,66 +85,67 @@
 
     .video-gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
-      padding: 40px 30px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 40px 20px;
     }
 
     .video-card {
       background-color: rgba(255, 255, 255, 0.05);
-      padding: 15px;
+      padding: 16px;
       border-radius: 16px;
-      border: 2px solid #a855f7;
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .video-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #a855f7;
+      border: 2px solid var(--card-border);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+      backdrop-filter: blur(6px);
     }
 
     .video-card h3 {
-      color: #93c5fd;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
+      color: var(--highlight);
+      font-size: 1rem;
+      margin-bottom: 12px;
+      text-align: center;
+      min-height: 48px;
     }
 
     video {
       width: 100%;
       border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100px;
+      background: transparent;
+      margin-top: 15px;
     }
 
     .back-link {
       display: block;
       text-align: center;
-      padding: 25px;
+      padding: 30px 20px;
       font-size: 1.1rem;
-      color: #7dd3fc;
+      color: var(--highlight);
       text-decoration: none;
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-
-    .back-link:hover {
-      color: #38bdf8;
-      text-shadow: 0 0 5px #38bdf8;
+      background-color: var(--header-bg);
+      border-top: 1px solid #444;
     }
 
     footer {
       text-align: center;
       padding: 15px;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: var(--header-bg);
       font-size: 0.9rem;
       color: #ccc;
     }
 
     @media screen and (max-width: 600px) {
       header h1 {
-        font-size: 2rem;
+        font-size: 1.9rem;
       }
-
-      marquee {
-        font-size: 1rem;
+      canvas {
+        height: 80px;
       }
     }
   </style>
@@ -105,15 +155,18 @@
 
   <header>
     <h1>🎬 Explore More Videos</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
     <marquee scrollamount="6">✨ Fun never ends – Dive into more awesome cat remixes!</marquee>
   </header>
 
   <section class="video-gallery">
+    <!-- REPEAT THIS STRUCTURE -->
     <div class="video-card">
       <h3>OIIA CAT x DIE WITH A SMILE</h3>
       <video controls>
         <source src="OIA CAT x Die with a smile.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -121,6 +174,7 @@
       <video controls>
         <source src="OIIA Cat x Gangnam Style (PSY Remix).mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -128,6 +182,7 @@
       <video controls>
         <source src="OIIA Cat x Baby One More Time (Britney Spears Remix).mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -135,6 +190,7 @@
       <video controls>
         <source src="Yung Kai ft Oiia Cat - Blue.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -142,6 +198,7 @@
       <video controls>
         <source src="OIIAOIIA CAT x RAT DANCE.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -149,6 +206,7 @@
       <video controls>
         <source src="CRAZY OIIAOIIA (OIIAOIIA Cat x Crazy Frog).mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -156,6 +214,7 @@
       <video controls>
         <source src="OIIA Cat x Pen Pineapple Apple Pen.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -163,6 +222,7 @@
       <video controls>
         <source src="OIIAOIIA CAT but Popular Mobile Games.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -170,6 +230,7 @@
       <video controls>
         <source src="OIIA CAT X Pirates of the Caribbean.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
 
     <div class="video-card">
@@ -177,6 +238,7 @@
       <video controls>
         <source src="OIIA Cat x EGYPTIAN OIIA.mp4" type="video/mp4" />
       </video>
+      <canvas></canvas>
     </div>
   </section>
 
@@ -184,6 +246,49 @@
     <p>&copy; 2025 Manjeetjr. All rights reserved.</p>
   </footer>
 
-</body>
+  <script>
+    // 🎧 Visualizer for ALL videos
+    document.querySelectorAll(".video-card").forEach(card => {
+      const video = card.querySelector("video");
+      const canvas = card.querySelector("canvas");
+      const ctx = canvas.getContext("2d");
 
+      let audioCtx, analyser, source, dataArray, bufferLength;
+
+      video.onplay = () => {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          source = audioCtx.createMediaElementSource(video);
+          analyser = audioCtx.createAnalyser();
+          source.connect(analyser);
+          analyser.connect(audioCtx.destination);
+          analyser.fftSize = 64;
+          bufferLength = analyser.frequencyBinCount;
+          dataArray = new Uint8Array(bufferLength);
+        }
+        draw();
+      };
+
+      function draw() {
+        if (!analyser) return;
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const barWidth = canvas.width / bufferLength;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i];
+          ctx.fillStyle = `rgba(168,85,247,${0.6 + i / bufferLength})`;
+          ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+          x += barWidth;
+        }
+      }
+    });
+
+    // 🌗 Toggle Theme
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+    }
+  </script>
+</body>
 </html>
